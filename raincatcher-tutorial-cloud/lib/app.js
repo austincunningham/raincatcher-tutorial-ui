@@ -49,5 +49,23 @@ mediator.subscribe('done:wfm:user:create', function(createdUser) {
   });
 });
 
+//added a delete end point to cloud server
+
+mediator.subscribe('wfm:user:delete', function(userToDelete) {
+  console.log({
+    topic: 'wfm:user:delete',
+    time: moment(new Date()).toString(),
+    user: userToDelete
+  });
+});
+
+mediator.subscribe('done:wfm:user:delete', function(deletedUser) {
+  console.log({
+    topic: 'done:wfm:user:delete',
+    time: moment(new Date()).toString(),
+    user: deletedUser
+  });
+});
+
 //module.exports = exports = app;
 module.exports = app;

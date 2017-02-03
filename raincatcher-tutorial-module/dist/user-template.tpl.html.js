@@ -61,7 +61,25 @@ ngModule.run(['$templateCache', function($templateCache) {
     '</div>\n' +
     '</form>\n'+
     '\n' +
-    ' \n' +
+    '\n' +
+    '\n' +
+    '<section class="eight wide column">\n' +
+    '    <h3 class="ui dividing header">Delete User</h3>\n' +
+    '<section class="ui rasied form segment user">\n' +
+    '    <div class="two fields"\n' +
+    '    <div class="field">\n' +
+    '    <div class="column"  >\n' +
+    '<select ng-model="id">\n' +
+    '  <option ng-repeat="user in users" value={{user}}>{{user.firstname}} {{user.lastname}}</option>\n' +
+    '</select>\n' +
+    '</div>\n' +
+    '</div>\n' +
+    '</div>\n' +
+    '<button class="ui blue submit button" ng-click="deleteUser()">Delete User <i class="trash icon"></i></button>\n' +
+    '</section>\n' +
+    '</section>\n' +
+    '<script>$(\'.ui.selection.dropdown\').dropdown();</script>\n' +
+    '\n' +
     '\n' +
     '');
 }]);

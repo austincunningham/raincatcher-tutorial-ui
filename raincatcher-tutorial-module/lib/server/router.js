@@ -57,5 +57,31 @@ module.exports = function setUpEventRouter(mediator) {
     mediator.publish('wfm:user:create', userToCreate);
   });
 
+
+  //sticking in a delete function
+    //Handler to process a request to create a new user.
+    //This endpoint is called from the `angular/services/user-client.js`
+  userRoute.delete(function(req, res) {
+    console.log('userRoute.delete do I ever get here')
+
+    var userToDelete = req.body;
+
+        //Subscribing once to the `done` state for the `wfm:user:create` topic
+        //This will return the created user to the client side of the module.
+    mediator.once('done:wfm:user:delete', function(deletedUser) {
+      res.json(deletedUser);
+    });
+
+        //Subscribing once to the `error` state for the `wfm:user:create` topic.
+        //This will return a 500 status to the client side.
+    mediator.once('error:wfm:user:delete', function(error) {
+      res.status(500).end(error);
+    });
+
+        //Publishing the `wfm:user:create` topic to have the user created.
+    mediator.publish('wfm:user:delete', userToDelete);
+  });
+
+
   return userRouter;
 };

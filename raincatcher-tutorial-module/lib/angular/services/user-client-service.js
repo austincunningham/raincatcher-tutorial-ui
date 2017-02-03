@@ -36,6 +36,21 @@ function UserClient(mediator) {
       }
     });
   });
+
+
+  // the format seems pretty similar for calling the mediator from angular
+  mediator.subscribe('wfm:user:delete', function(userToDelete) {
+    console.log('mediator subscribe do i get here??');
+    self.create(userToDelete, function(error, deletedUser) {
+            //If there is an error in the http request, then publish the error state for the `wfm:user:create` topic.
+      if (error) {
+        mediator.publish('error:wfm:user:delete', error);
+      } else {
+                //No error, publish the `done` state for the `wfm:user:create` topic with the list of users obtained.
+        mediator.publish('done:wfm:user:delete', deletedUser);
+      }
+    });
+  });
 }
 
 /**
@@ -74,6 +89,30 @@ UserClient.prototype.create = function create(userToCreate, callback) {
   request.post({
     url: createUrl,
     body: userToCreate,
+    json: true
+  }, function(error, httpResponse, body) {
+    return callback(error, body);
+  });
+
+};
+
+
+
+/**
+ * Calling the create endpoint to delete a new user.
+ *
+ * @param userToDelete - Object describing the user to create.
+ * @param callback     - function to be called when the response has returned from the cloud.
+ */
+UserClient.prototype.delete = function create(userToDelete, callback) {
+  console.log('UserClient prototype.delete do I ever get here');
+  //This url is where the users cloud side router is mounted in a cloud app. See `server/router.js`
+  var createUrl = config.apiHost + config.apiPath;
+
+    //Making a POST request that will add the user and return the created user from the cloud.
+  request.delete({
+    url: createUrl,
+    body: userToDelete,
     json: true
   }, function(error, httpResponse, body) {
     return callback(error, body);

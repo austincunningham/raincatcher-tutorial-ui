@@ -53,5 +53,22 @@ function TopicMonitorController($scope, mediator) {
     });
   });
 
+  // my attempt to add delete to topic list
+  mediator.subscribe('wfm:user:delete', function(userToDelete) {
+    $scope.topics.push({
+      topic: 'wfm:user:delete',
+      time: moment(new Date()),
+      user: JSON.stringify(userToDelete)
+    });
+  });
+
+  mediator.subscribe('done:wfm:user:delete', function(deletedUser) {
+    $scope.topics.push({
+      topic: 'done:wfm:user:delete',
+      time: moment(new Date()),
+      user: JSON.stringify(deletedUser)
+    });
+  });
+
 }
 

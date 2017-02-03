@@ -19,6 +19,7 @@ function UserController($scope, mediator) {
   //The fields will be bound in the directive.
   $scope.newUser = {};
 
+
   $scope.loading = true;
 
   //Subscribing to the `done` state for the `wfm:user:list` topic.
@@ -35,10 +36,20 @@ function UserController($scope, mediator) {
     mediator.publish('wfm:user:list');
   });
 
+    //Whenever a user has been deleted, get an updated list of users from the server.
+  mediator.subscribe('done:wfm:user:delete', function() {
+    mediator.publish('wfm:user:list');
+  });
+
   //Adding a new user: this is done by publishing the `wfm:user:create` topic with the user to be created
   $scope.addUser = function addUser() {
     $scope.loading = true;
     mediator.publish('wfm:user:create', $scope.newUser);
+  };
+
+  $scope.deleteUser = function deleteUser() {
+    $scope.loading = true;
+    mediator.publish('wfm:user:delete',$scope.deletedUser);
   };
 
   //Publishing the wfm:user:list topic to get a list of users from the cloud.
